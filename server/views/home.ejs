@@ -1,0 +1,59 @@
+<div class = "container">
+    <br>
+    <h1>Home</h1>
+    <div class = "row">
+        <div class = "col-sm">
+            <br>
+            <br>
+            <h3>Response generator</h3>
+            <p class = "text-left">Welcome to the response generator tool. This generator uses OPENAI Api (text-curie-001). Write any question
+                to the bot. You will be able to save your favorite questions and delete them if you want to by creating an account.
+                Also you will have the possibility to change between using the response generator or the editor to correct text
+            </p>
+        </div>
+        <div class = "col-sm">
+            <form method = "GET">
+                <input id = 'inputText' name="inputText"></input>
+                <p id="responseText" name="responseText" ><%= response %></p>
+                <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
+              </form>
+        </div>
+    </div>
+    <div class = "row">
+        <h2>Your questions</h2>
+        <table class = "table">
+            <thead>
+                <tr>
+                    <th scope= "col">#</th>
+                    <th scope= "col">Tool used</th>
+                    <th scope= "col">Question</th>
+                    <th scope= "col">Answer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let count=0; count< questions.lenght; count++) {%>
+                    <tr>
+                        <th scope="row">
+                            <=%count + 1%>
+                        </th>
+                        <td>
+                            <%= questions[count].Tool %>
+                        </td>
+                        <td>
+                            <%= questions[count].Question %>
+                        </td>
+                        <td>
+                            <%= questions[count].Answer %>
+                        </td>
+                        <td>
+                            <a href ="/delete/<%=questions[count]._id %>" class="btn btn-danger btn-sm>">
+                                <i class="fas fa-trash-alt"></i>&nbsp;Delete
+                            </a>
+                        </td>
+                    </tr>
+                    
+            </tbody>
+        </table>
+    </div>
+
+</div>
