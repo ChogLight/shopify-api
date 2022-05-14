@@ -14,7 +14,7 @@ const configuration = new OpenAIApi.Configuration({
 const openai = new OpenAIApi.OpenAIApi(configuration);
 
 function requireAuth(req, res, next) {
-  // check if the user is logged in H
+  // check if the user is logged in
   if (!req.isAuthenticated()) {
     return res.redirect("/login");
   }
@@ -31,8 +31,13 @@ router.get('/', function(req, res, next) {
       response = ''
     }
     else{
+      (tool=='Completing')?
         response = await openai.createCompletion("text-curie-001",{
         prompt: input,
+        max_tokens: 256
+      }):
+      response = await openai.createCompletion("text-curie-001",{
+        prompt: 'Correct this to standard English: ' + input,
         max_tokens: 256
       })
     }
@@ -47,7 +52,8 @@ router.get('/', function(req, res, next) {
           question: (input == undefined) ? '' : input,
           tool: tool,
           questions: questions,
-          displayName: req.user ? req.user.displayName : "" 
+          displayName: req.user ? req.user.displayName : "",
+          user: req.user
         });
       }
     })

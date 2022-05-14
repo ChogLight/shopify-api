@@ -19,12 +19,32 @@
             </div>
             <div class = "col-sm">
                 <form method = "GET">
-                    <select name="tool" id="tool">
-                        <option value="Completing">Completing</option>
-                        <option value="Editing">Editing</option>
-                    </select>
-                    <input id = 'inputText' name="inputText"></input>
-                    <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h3>Write your question</h3>
+                                    <textarea id = 'inputText' name="inputText"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <lable for="tool">Tool:</lable>
+                                    <select name="tool" id="tool">
+                                        <option value="Completing">Completing</option>
+                                        <option value="Editing">Editing</option>
+                                    </select>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                   </form>
             </div>
         </div>
@@ -54,6 +74,7 @@
                 
               </form>
         </div>
+        <% if(displayName != '') {%>
         <div class = "row">
             <h2>Your questions</h2>
             <table class = "table">
@@ -66,14 +87,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% for(let count=0; count< questions.lenght; count++) {%>
-                        <% if(typeof displayName == 'string' && questions[count].Username == user.id) {%>
+                    <% for(let count=0; count< questions.length; count++) {%>
+                        <% if(displayName != '' && questions[count].Username == user.id) {%>
                         <tr>
                             <th scope="row">
-                                <=%count + 1%>
+                                <%=count + 1%>
                             </th>
                             <td>
-                                <%= questions[count].Tool %>
+                                <%= questions[count].ToolUsed %>
                             </td>
                             <td>
                                 <%= questions[count].Question %>
@@ -92,7 +113,7 @@
                 </tbody>
             </table>
         </div>
-    
+        <% } %>
     </div>
 </body>
 
