@@ -38,7 +38,8 @@ router.get('/', function(req, res, next) {
     console.log(response)
     res.render('home', { 
       title: 'Answer generation tool',
-      response: (response == '') ? '': response.data.choices[0].text
+      response: (response == '') ? '': response.data.choices[0].text,
+      question: (input == undefined) ? '' : input 
     });
   })();
 });

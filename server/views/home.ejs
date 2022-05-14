@@ -24,10 +24,22 @@
                     <option value="Editing">Editing</option>
                 </select>
                 <input id = 'inputText' name="inputText"></input>
-                <p id="responseText" name="responseText" ><%= response %></p>
                 <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
               </form>
         </div>
+    </div>
+    <div class = "row">
+        <form method = "POST">
+            <% if(question != '') {%>
+            <h3>Question</h3>
+            <%} else {}%>
+            <p id = 'questionText' name="questionText" type = "submit"><%= question %></p>
+            <% if(question != '') {%>
+                <h3>Answer</h3>
+            <%} else {}%>
+            <p id="responseText" name="responseText" type = "submit"><%= response %></p>
+            <input class="btn btn-primary" type="submit" value = "Save Question"></input>
+          </form>
     </div>
     <div class = "row">
         <h2>Your questions</h2>
