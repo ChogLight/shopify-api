@@ -50,26 +50,27 @@
         </div>
         <div class = "row">
             <form method = "POST">
-                <% if(question != '') {%>
+                <% if(response != '') {%>
                 <h3>Question</h3>
                 <%} else {}%>
                 <input class = "" id = 'questionText' name="questionText" type = "hidden" value="<%= question %>"><p>
                     <%= question %>
                 </p></input>
-                <% if(question != '') {%>
+                <% if(response != '') {%>
                     <h3>Answer</h3>
                 <%} else {}%>
                 <input id="responseText" name="responseText" type = "hidden" value="<%= response %>"><p>
                     <%= response %>
                 </p></input>
-                <% if(question != '') {%>
+                <% if(response != '') {%>
                     <h3>Tool Used</h3>
                     <%} else {}%>
                 <input id="toolUsed" name="toolUsed" type = "hidden" value="<%= tool %>"><p>
                     <%= tool %>
                 </p></input>
-                <% if(question != '') {%>
+                <% if(response != '') {%>
                     <input class="btn btn-primary" type="submit" value = "Save Question"></input>
+                    <a href ="/" class="btn btn-danger btn-sm>">Cancel</a>
                 <%} else {}%>
                 
               </form>
