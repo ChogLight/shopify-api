@@ -6,12 +6,20 @@ let DB = require('../config/db');
 let userModel = require('../models/users');
 let User = userModel.User;
 let question = require('../models/questions')
+require('dotenv').config();
 const configuration = new OpenAIApi.Configuration({
     user:'Juan Sebastian Galvis Chaves',
-    apiKey: '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',
+    apiKey: process.env['OPEN_API_KEY'],
 });
 const openai = new OpenAIApi.OpenAIApi(configuration);
 
+function requireAuth(req, res, next) {
+  // check if the user is logged in H
+  if (!req.isAuthenticated()) {
+    return res.redirect("/login");
+  }
+  next();
+}
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
@@ -148,5 +156,23 @@ router.get("/delete/:id", requireAuth, (req, res, next) => {
       res.redirect("/");
     }
   });
+});
+router.post('/', requireAuth,(req,res,next) => {
+    
+    let newQuestion = question({
+      ToolUsed:req.body.tool,
+      Question: req.body.inputText,
+      Answer: req.body.responseText
+    })
+
+    question.create(newQuestion, (err, question) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      else{
+        res.redirect('/')
+      }
+    })
 });
 module.exports = router;

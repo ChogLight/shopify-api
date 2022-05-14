@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/Content/app.css" />
 <div class = "container">
     <br>
     <h1>Home</h1>
@@ -13,6 +19,10 @@
         </div>
         <div class = "col-sm">
             <form method = "GET">
+                <select name="tool" id="tool">
+                    <option value="Completing">Completing</option>
+                    <option value="Editing">Editing</option>
+                </select>
                 <input id = 'inputText' name="inputText"></input>
                 <p id="responseText" name="responseText" ><%= response %></p>
                 <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
@@ -30,6 +40,7 @@
                     <th scope= "col">Answer</th>
                 </tr>
             </thead>
+            <% if(typeof displayName == 'string' && displayName) {%>
             <tbody>
                 <% for(let count=0; count< questions.lenght; count++) {%>
                     <tr>
@@ -51,8 +62,9 @@
                             </a>
                         </td>
                     </tr>
-                    
+                    <% } %>
             </tbody>
+            <% } else { }%>
         </table>
     </div>
 

@@ -11,7 +11,7 @@ let passportLocal = require('passport-local');
 let localStrategy = passportLocal.Strategy;
 let flash = require('connect-flash');
 let mongoose = require('mongoose');
-let DB = require('./db')
+let DB = require('./db');
 mongoose.connect(process.env.URI || DB.URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 let mongoDB = mongoose.connection;
@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
-
+require('dotenv').config({path: __dirname + '/.env'})
 app.use(session({
   secret:"SomeSecrete",
   saveUninitialized: false,

@@ -1,5 +1,6 @@
+require('dotenv').config();
 module.exports = {
-    "URI": "mongodb+srv://chog:mIGgJ4KMrBhMc7TT@cluster0.uy5cy.mongodb.net/shopify?retryWrites=true&w=majority",
+    "URI": process.env['MONGODB_URL'],
     "Secret": 'SomeSecret'
   };
 
