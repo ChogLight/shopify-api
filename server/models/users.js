@@ -14,6 +14,9 @@ let User = mongoose.Schema
             default: '',
             required: 'DisplayName is required'
         }
+    },
+    {
+        collection:'users'
     }
 )
 

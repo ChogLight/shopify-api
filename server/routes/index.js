@@ -25,6 +25,7 @@ router.get('/', function(req, res, next) {
   
   (async () => {
     const input = req.query.inputText
+    const tool = req.query.tool
     let response = '';
     if(input == undefined){
       response = ''
@@ -35,12 +36,21 @@ router.get('/', function(req, res, next) {
         max_tokens: 256
       })
     }
-    console.log(response)
-    res.render('home', { 
-      title: 'Answer generation tool',
-      response: (response == '') ? '': response.data.choices[0].text,
-      question: (input == undefined) ? '' : input 
-    });
+    question.find((err, questions) => {
+      if (err) {
+        return console.error(err);
+      } else{
+        console.log(questions)
+        res.render('home', { 
+          title: 'Answer generation tool',
+          response: (response == '') ? '': response.data.choices[0].text,
+          question: (input == undefined) ? '' : input,
+          tool: tool,
+          questions: questions,
+          displayName: req.user ? req.user.displayName : "" 
+        });
+      }
+    })
   })();
 });
 
@@ -61,9 +71,8 @@ router.get('/login', function(req, res, next) {
   }
 }
 );
-
-/*POST login page */
-router.post('/login', function(req, res, next) {
+ /*POST login page */
+ router.post('/login', function(req, res, next) {
   passport.authenticate('local',
   (err, user, info) => {
       // server err?
@@ -107,12 +116,11 @@ router.get('/register', function(req, res, next) {
   }
 });
 
-/* GET Route for processing the register page. (Heylisse)*/
+/* GET Route for processing the register page.*/
 router.post('/register', function(req, res, next) {
   // instantiate a user object
   let newUser = new User({
       username: req.body.username,
-      email: req.body.email,
       displayName: req.body.displayName
   });
 
@@ -143,10 +151,12 @@ router.post('/register', function(req, res, next) {
       }
   });
 });
+/*GET Logout */
 router.get('/logout', function(req, res, next) {
   req.logout();
   res.redirect('/');
 });
+/*GET Delete question*/
 router.get("/delete/:id", requireAuth, (req, res, next) => {
   let id = req.params.id;
   question.remove({ _id: id }, (err) => {
@@ -159,21 +169,22 @@ router.get("/delete/:id", requireAuth, (req, res, next) => {
   });
 });
 router.post('/', requireAuth,(req,res,next) => {
-    
-    let newQuestion = question({
-      ToolUsed:req.body.tool,
-      Question: req.body.inputText,
-      Answer: req.body.responseText
-    })
+  
+  let newQuestion = question({
+    Username: req.user.id,
+    ToolUsed:req.body.toolUsed,
+    Question: req.body.questionText,
+    Answer: req.body.responseText
+  })
 
-    question.create(newQuestion, (err, question) => {
-      if(err){
-        console.log(err);
-        res.end(err);
-      }
-      else{
-        res.redirect('/')
-      }
-    })
+  question.create(newQuestion, (err, question) => {
+    if(err){
+      console.log(err);
+      res.end(err);
+    }
+    else{
+      res.redirect('/')
+    }
+  })
 });
 module.exports = router;

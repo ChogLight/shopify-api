@@ -1,83 +1,99 @@
+<%- include ./partials/header.ejs %>
 <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="/@fortawesome/fontawesome-free/css/all.min.css"
-    />
-    <link rel="stylesheet" href="/Content/app.css" />
-<div class = "container">
-    <br>
-    <h1>Home</h1>
-    <div class = "row">
-        <div class = "col-sm">
-            <br>
-            <br>
-            <h3>Response generator</h3>
-            <p class = "text-left">Welcome to the response generator tool. This generator uses OPENAI Api (text-curie-001). Write any question
-                to the bot. You will be able to save your favorite questions and delete them if you want to by creating an account.
-                Also you will have the possibility to change between using the response generator or the editor to correct text
-            </p>
+<link rel="stylesheet" href="/@fortawesome/fontawesome-free/css/all.min.css"/>
+<link rel="stylesheet" href="/Content/app.css" />
+<link rel="stylesheet" href="/stylesheets/style.css" />
+<body>
+    <div class = "container">
+        <br>
+        <h1>Home</h1>
+        <div class = "row">
+            <div class = "col-sm">
+                <br>
+                <br>
+                <h3>Response generator</h3>
+                <p class = "text-left">Welcome to the response generator tool. This generator uses OPENAI Api (text-curie-001). Write any question
+                    to the bot. You will be able to save your favorite questions and delete them if you want to by creating an account.
+                    Also you will have the possibility to change between using the response generator or the editor to correct text
+                </p>
+            </div>
+            <div class = "col-sm">
+                <form method = "GET">
+                    <select name="tool" id="tool">
+                        <option value="Completing">Completing</option>
+                        <option value="Editing">Editing</option>
+                    </select>
+                    <input id = 'inputText' name="inputText"></input>
+                    <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
+                  </form>
+            </div>
         </div>
-        <div class = "col-sm">
-            <form method = "GET">
-                <select name="tool" id="tool">
-                    <option value="Completing">Completing</option>
-                    <option value="Editing">Editing</option>
-                </select>
-                <input id = 'inputText' name="inputText"></input>
-                <input class="btn btn-primary" type="submit" value = "Get Answer"></input>
+        <div class = "row">
+            <form method = "POST">
+                <% if(question != '') {%>
+                <h3>Question</h3>
+                <%} else {}%>
+                <input class = "" id = 'questionText' name="questionText" type = "hidden" value="<%= question %>"><p>
+                    <%= question %>
+                </p></input>
+                <% if(question != '') {%>
+                    <h3>Answer</h3>
+                <%} else {}%>
+                <input id="responseText" name="responseText" type = "hidden" value="<%= response %>"><p>
+                    <%= response %>
+                </p></input>
+                <% if(question != '') {%>
+                    <h3>Tool Used</h3>
+                    <%} else {}%>
+                <input id="toolUsed" name="toolUsed" type = "hidden" value="<%= tool %>"><p>
+                    <%= tool %>
+                </p></input>
+                <% if(question != '') {%>
+                    <input class="btn btn-primary" type="submit" value = "Save Question"></input>
+                <%} else {}%>
+                
               </form>
         </div>
-    </div>
-    <div class = "row">
-        <form method = "POST">
-            <% if(question != '') {%>
-            <h3>Question</h3>
-            <%} else {}%>
-            <p id = 'questionText' name="questionText" type = "submit"><%= question %></p>
-            <% if(question != '') {%>
-                <h3>Answer</h3>
-            <%} else {}%>
-            <p id="responseText" name="responseText" type = "submit"><%= response %></p>
-            <input class="btn btn-primary" type="submit" value = "Save Question"></input>
-          </form>
-    </div>
-    <div class = "row">
-        <h2>Your questions</h2>
-        <table class = "table">
-            <thead>
-                <tr>
-                    <th scope= "col">#</th>
-                    <th scope= "col">Tool used</th>
-                    <th scope= "col">Question</th>
-                    <th scope= "col">Answer</th>
-                </tr>
-            </thead>
-            <% if(typeof displayName == 'string' && displayName) {%>
-            <tbody>
-                <% for(let count=0; count< questions.lenght; count++) {%>
+        <div class = "row">
+            <h2>Your questions</h2>
+            <table class = "table">
+                <thead>
                     <tr>
-                        <th scope="row">
-                            <=%count + 1%>
-                        </th>
-                        <td>
-                            <%= questions[count].Tool %>
-                        </td>
-                        <td>
-                            <%= questions[count].Question %>
-                        </td>
-                        <td>
-                            <%= questions[count].Answer %>
-                        </td>
-                        <td>
-                            <a href ="/delete/<%=questions[count]._id %>" class="btn btn-danger btn-sm>">
-                                <i class="fas fa-trash-alt"></i>&nbsp;Delete
-                            </a>
-                        </td>
+                        <th scope= "col">#</th>
+                        <th scope= "col">Tool used</th>
+                        <th scope= "col">Question</th>
+                        <th scope= "col">Answer</th>
                     </tr>
-                    <% } %>
-            </tbody>
-            <% } else { }%>
-        </table>
+                </thead>
+                <tbody>
+                    <% for(let count=0; count< questions.lenght; count++) {%>
+                        <% if(typeof displayName == 'string' && questions[count].Username == user.id) {%>
+                        <tr>
+                            <th scope="row">
+                                <=%count + 1%>
+                            </th>
+                            <td>
+                                <%= questions[count].Tool %>
+                            </td>
+                            <td>
+                                <%= questions[count].Question %>
+                            </td>
+                            <td>
+                                <%= questions[count].Answer %>
+                            </td>
+                            <td>
+                                <a href ="/delete/<%=questions[count]._id %>" class="btn btn-danger btn-sm>">
+                                    <i class="fas fa-trash-alt"></i>&nbsp;Delete
+                                </a>
+                            </td>
+                        </tr>
+                        <% } else { }%>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    
     </div>
+</body>
 
-</div>
+<%- include ./partials/footer.ejs %>
